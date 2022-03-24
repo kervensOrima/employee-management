@@ -13,6 +13,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,20 +39,21 @@ public class Adress {
 	private Long id ;
 	
 	@NotNull
-	@Size( max = 50 , min = 5 , message = "Rue invalid" )
+	@Size( max = 50 , min = 3 , message = "Rue invalid" )
 	@Column( length = 50 , nullable = false )
 	private String rue ;
 	
 	@NotNull
-	@Size( max = 50 , min = 5 , message = "Ville invalid" )
+	@Size( max = 50 , min = 3 , message = "Ville invalid" )
 	@Column( length = 50 , nullable = false )
 	private String ville ;
 	
 	@NotNull
-	@Size( max = 50 , min = 5 , message = "Code postal invalid" )
+	@Size( max = 50 , min = 3 , message = "Code postal invalid" )
 	@Column( length = 50 , nullable = false )
 	private String codePostal ;
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "employee_id")
 	private Employee employee ;

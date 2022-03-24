@@ -16,6 +16,8 @@ public interface IEmployee {
 	
 	public Employee saveEmployee(Employee employee) ;
 	
+	public void deleteEmployee( Long employeeID) ;
+	
 	public List<Employee>  findByEtat(String etat) ;
 	
 	public List<Employee> findByTypeContrat(String typeContrat) ;
@@ -36,7 +38,7 @@ public interface IEmployee {
 	
 	public List<EmployeeByMonthDTO> numberOfEmployeesEmbaucherByMonth() ;
 	
-	public Long numberOfEmployeesByMonth(Long date) ;
+	public List<EmployeeByMonthDTO> numberOfEmployeesByMonth(Long year) ;
 	
 	
 }

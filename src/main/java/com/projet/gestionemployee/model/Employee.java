@@ -85,11 +85,11 @@ public class Employee implements Serializable {
 	@Size( min = 2 , max = 50 , message="Etat invalid")
 	private String etat ;
 	
-	@JsonProperty(access = Access.WRITE_ONLY)
+//	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany( mappedBy = "employee" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
 	private List<Adress> adresses ;
 	
-	@JsonProperty(access = Access.WRITE_ONLY)
+//	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany( mappedBy = "employee" , cascade = CascadeType.REMOVE , fetch = FetchType.LAZY)
 	private List<Phone> phones ;
 }

@@ -9,7 +9,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ import com.projet.gestionemployee.service.EmployeeService;
 
 @RestController
 @RequestMapping( path = "/employee-management-app/" , name = "employee management principal root")
-
+@CrossOrigin(origins = "*")
 public class EmployeeController {
 
 	@Autowired
@@ -47,7 +48,7 @@ public class EmployeeController {
 			// TODO: handle exception
 			System.out.println( e.getMessage() );
 		}
-		return new ResponseEntity<Optional<Employee>>(employee, HttpStatus.NOT_FOUND )  ;
+		return new ResponseEntity<Optional<Employee>>(employee, HttpStatus.OK)  ;
 	}
 	
 	@PutMapping( path = "/employee" , name="Update an employee")
@@ -71,9 +72,23 @@ public class EmployeeController {
 		return new ResponseEntity<Employee>( this.employeeService.saveEmployee(employee), HttpStatus.CREATED ) ;
 	}
 	
+	@DeleteMapping(path = "/employee/{employeeID}")
+	public ResponseEntity<?> deleteEmployee( @PathVariable(name = "employeeID") Long employeeID ){
+		try {
+			this.employeeService.deleteEmployee(employeeID) ;
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+			return new ResponseEntity<Exception>( HttpStatus.NO_CONTENT) ;
+		}
+		
+		return new ResponseEntity<>( HttpStatus.NO_CONTENT ) ;
+	}
+	
+	
 	@RequestMapping( path = "/employees-by-etat/{etat}" , name="Find employees by etat" , method = RequestMethod.GET)
 	public ResponseEntity<List<Employee>> findEmployeeByEtat(@PathVariable String etat) {
-		return new ResponseEntity<List<Employee>>( this.employeeService.findByEtat(etat), HttpStatus.FOUND) ;
+		return new ResponseEntity<List<Employee>>( this.employeeService.findByEtat(etat), HttpStatus.OK) ;
 	}
 	
 	
@@ -83,9 +98,9 @@ public class EmployeeController {
 	}
 	
 	
-	@RequestMapping( path = "/employees-not-contains-contrat" , name=" Find employees not contains contrat" , method = RequestMethod.GET )
-	public ResponseEntity<List<Employee>> findNoContainsContrat() {
-		return new ResponseEntity<List<Employee>>( this.employeeService.findNoContainsContrat(false)  , HttpStatus.OK) ;
+	@RequestMapping( path = "/employees-not-contains-contrat/{isContrat}" , name=" Find employees not contains contrat" , method = RequestMethod.GET )
+	public ResponseEntity<List<Employee>> findNoContainsContrat(@PathVariable(name = "isContrat") boolean isContrat) {
+		return new ResponseEntity<List<Employee>>( this.employeeService.findNoContainsContrat(isContrat)  , HttpStatus.OK) ;
 	}
 	
 	@RequestMapping( path = "/employees-quantity" , name=" Find number of employee" , method = RequestMethod.GET )
@@ -119,9 +134,9 @@ public class EmployeeController {
 		return new ResponseEntity<List<EmployeeByMonthDTO>>( this.employeeService.numberOfEmployeesEmbaucherByMonth() , HttpStatus.OK ) ;
 	}
 	
-	@RequestMapping( path="/employee-by-month/{month}" , name="Get number of employee enroll (hire) by month")
-	public ResponseEntity<Long> numberOfEmployeesByMonth(@PathVariable Long month) {
-		return new ResponseEntity<Long> ( this.employeeService.numberOfEmployeesByMonth(month) , HttpStatus.OK ) ;
+	@RequestMapping( path="/employee-by-month/{year}" , name="Get number of employee enroll (hire) by month for a specific year")
+	public ResponseEntity<List<EmployeeByMonthDTO>> numberOfEmployeesByMonth(@PathVariable Long year) {
+		return new ResponseEntity<List<EmployeeByMonthDTO>> ( this.employeeService.numberOfEmployeesByMonth(year) , HttpStatus.OK ) ;
 	}
 	
 }

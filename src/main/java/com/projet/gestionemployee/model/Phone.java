@@ -13,6 +13,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,6 +48,7 @@ public class Phone implements Serializable {
 	@Size(min = 8 , max = 20 )
 	private String phone ;
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@ManyToOne
 	@JoinColumn(name = "employee_id")
 	private Employee employee ;

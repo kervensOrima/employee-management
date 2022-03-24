@@ -35,9 +35,13 @@ public interface EmployeeRepository extends JpaRepository< Employee, Long> {
 	@Query( value = "SELECT COUNT(*) FROM employee WHERE lower(type_contrat) = lower(:typeContrat)" , nativeQuery = true )
 	public Long NumberOfEmployeeCDI(@Param( value = "typeContrat") String typeContrat  ) ;
 	
-	@Query( value ="SELECT  extract(month from date_embauche) month , count(*) nbEmployee from employee GROUP by extract(month from date_embauche) , extract(month from date_embauche)" , nativeQuery = true )
+	@Query( value ="SELECT  extract(month from date_embauche) month , count(*) nbEmployee from employee GROUP by extract(month from date_embauche) , extract(month from date_embauche) " , nativeQuery = true )
 	public List<EmployeeByMonthDTO> numberOfEmployeesEmbaucherByMonth() ;
 	
 	@Query( value = "SELECT count(*) \"Nombre d'employee\" from employee where extract(month from date_embauche) = :month" , nativeQuery = true )
 	public Long numberOfEmployeesByMonth(@Param(value = "month") Long month) ;
+
+	@Query( value = "SELECT count(*) \"Nombre d'employee\" from employee where extract(month from date_embauche) = :month and extract(year from date_embauche) =:year " , nativeQuery = true )
+	public Long numberOfEmployeesByMonth(@Param(value = "month") Long month , @Param(value = "year") Long year) ;
+	
 }
